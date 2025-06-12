@@ -1691,7 +1691,7 @@ const CognitiveGym = () => {
                     </div>
                   ))}
 
-                  {/* Enhanced 3D Objects */}
+                  {/* Enhanced 3D Objects with smooth transitions */}
                   {currentRoom.map(obj => {
                     const isSelected = selectedObject === obj.id;
                     const zDepth = obj.position.z;
@@ -1700,8 +1700,8 @@ const CognitiveGym = () => {
                     return (
                       <div
                         key={obj.id}
-                        className={`absolute cursor-pointer transition-all duration-300 hover:scale-110 ${
-                          isSelected ? 'ring-4 ring-orange-500 ring-opacity-75 animate-pulse z-50' : ''
+                        className={`absolute cursor-pointer transition-all duration-500 hover:scale-110 ${
+                          isSelected ? 'ring-4 ring-green-500 ring-opacity-75 animate-pulse z-50' : 'hover:ring-2 hover:ring-orange-300'
                         }`}
                         style={{
                           left: `${obj.position.x}%`,
@@ -1711,44 +1711,61 @@ const CognitiveGym = () => {
                             translateZ(${zDepth}px) 
                             rotateX(15deg) rotateY(-10deg) 
                             scale(${scale})
+                            ${isSelected ? 'translateY(-10px)' : ''}
                           `,
                           zIndex: isSelected ? 350 : 300 - zDepth,
-                          filter: `brightness(${1 - zDepth / 1000}) contrast(${1 + zDepth / 500})`
+                          filter: `brightness(${1 - zDepth / 1000}) contrast(${1 + zDepth / 500}) ${isSelected ? 'drop-shadow(0 10px 20px rgba(34, 197, 94, 0.5))' : ''}`,
+                          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
                         }}
                         onClick={() => selectObject(obj.id)}
                       >
                         <div className="relative">
                           <div 
-                            className="absolute bg-gray-800/20 rounded-full blur-sm"
+                            className="absolute bg-gray-800/20 rounded-full blur-sm transition-all duration-500"
                             style={{
                               width: `${60 + obj.height / 4}px`,
                               height: '20px',
                               bottom: '-10px',
                               left: '50%',
                               transform: 'translateX(-50%)',
-                              zIndex: -1
+                              zIndex: -1,
+                              opacity: isSelected ? 0.8 : 0.4
                             }}
                           />
                           
-                          <div className={`text-center bg-white/90 backdrop-blur rounded-lg p-3 shadow-xl border border-white/50 ${isSelected ? 'bg-orange-200/90' : ''}`}>
+                          <div className={`text-center backdrop-blur rounded-lg p-3 shadow-xl border transition-all duration-500 ${
+                            isSelected 
+                              ? 'bg-green-200/90 border-green-400 shadow-green-500/30' 
+                              : 'bg-white/90 border-white/50 hover:bg-orange-100/90'
+                          }`}>
                             <div 
-                              className="mb-2 filter drop-shadow-lg"
+                              className="mb-2 filter drop-shadow-lg transition-transform duration-300"
                               style={{ 
                                 fontSize: `${Math.max(40, 60 - zDepth / 5)}px`,
                                 height: `${obj.height * scale}px`,
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                transform: isSelected ? 'scale(1.1)' : 'scale(1)'
                               }}
                             >
                               {obj.emoji}
                             </div>
                             <div 
-                              className={`text-xs font-bold px-2 py-1 rounded-full ${isSelected ? 'bg-orange-300 text-orange-900' : 'bg-white/80 text-gray-800'}`}
+                              className={`text-xs font-bold px-2 py-1 rounded-full transition-all duration-300 ${
+                                isSelected 
+                                  ? 'bg-green-300 text-green-900 shadow-lg' 
+                                  : 'bg-white/80 text-gray-800'
+                              }`}
                               style={{ fontSize: `${Math.max(10, 12 - zDepth / 50)}px` }}
                             >
                               {obj.name}
                             </div>
+                            {isSelected && (
+                              <div className="text-xs font-bold text-green-700 mt-1 animate-bounce">
+                                Selected ✓
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
