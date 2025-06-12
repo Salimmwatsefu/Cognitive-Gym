@@ -1652,27 +1652,41 @@ const CognitiveGym = () => {
                     <rect width="100%" height="100%" fill="url(#isoGrid)" />
                   </svg>
 
-                  {/* FIXED: Position Markers - Now positioned BESIDE the actual positions */}
+                  {/* FIXED: Position Markers - Now positioned BESIDE the actual positions with enhanced interaction */}
                   {gamePhase === 'rebuild' && RoomPositions.map((pos, index) => (
                     <div
                       key={index}
-                      className="absolute border-3 border-dashed border-orange-500 rounded-lg bg-orange-200/80 cursor-pointer hover:bg-orange-300/90 transition-all duration-200 flex items-center justify-center text-xs text-orange-800 font-bold shadow-lg hover:shadow-xl transform hover:scale-110"
+                      className="absolute border-3 border-dashed border-orange-500 rounded-lg bg-orange-200/80 cursor-pointer hover:bg-orange-300/90 transition-all duration-200 flex items-center justify-center text-xs text-orange-800 font-bold shadow-lg hover:shadow-xl transform hover:scale-110 active:scale-95"
                       style={{
-                        left: `${pos.markerX}%`,  // FIXED: Use separate marker position
-                        top: `${pos.markerY}%`,   // FIXED: Use separate marker position
-                        width: '70px',
-                        height: '50px',
+                        left: `${pos.markerX}%`,
+                        top: `${pos.markerY}%`,
+                        width: '80px',
+                        height: '60px',
                         transform: `translateX(-50%) translateY(-50%)`,
-                        zIndex: 400, // Always on top
-                        background: `linear-gradient(135deg, rgba(251, 146, 60, 0.8), rgba(251, 146, 60, 0.9))`,
+                        zIndex: 400,
+                        background: selectedObject 
+                          ? `linear-gradient(135deg, rgba(34, 197, 94, 0.8), rgba(34, 197, 94, 0.9))` 
+                          : `linear-gradient(135deg, rgba(251, 146, 60, 0.8), rgba(251, 146, 60, 0.9))`,
                         backdropFilter: 'blur(2px)',
-                        border: '3px dashed #ea580c'
+                        border: selectedObject 
+                          ? '3px dashed #16a34a' 
+                          : '3px dashed #ea580c',
+                        animation: selectedObject ? 'pulse 2s ease-in-out infinite' : 'none'
                       }}
-                      onClick={() => placeObject(pos)} // Still places at original position
+                      onClick={() => placeObject(pos)}
                     >
                       <div className="text-center">
-                        <div className="text-xl">📍</div>
-                        <div className="text-xs leading-tight font-extrabold">{pos.name}</div>
+                        <div className="text-xl">
+                          {selectedObject ? '✅' : '📍'}
+                        </div>
+                        <div className="text-xs leading-tight font-extrabold">
+                          {pos.name}
+                        </div>
+                        {selectedObject && (
+                          <div className="text-xs text-green-800 font-bold mt-1">
+                            Click to place
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
