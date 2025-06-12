@@ -72,187 +72,322 @@ button:active {
   }
 }
 
-/* Game-specific styles */
+/* Enhanced Game-specific styles */
 .maze-cell {
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
 }
 
 .maze-cell:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.falling-word {
-  animation: fall linear;
-  user-select: none;
+/* Slower animations for seniors */
+.slow-pulse {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes fall {
-  from {
-    transform: translateY(-100px);
-  }
-  to {
-    transform: translateY(400px);
-  }
+.slow-bounce {
+  animation: bounce 2s infinite;
 }
 
-/* VR-Style 3D Effects */
+.slow-ping {
+  animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Enhanced VR-Style 3D Effects */
 .vr-orb {
   transform-style: preserve-3d;
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotateY(0deg); }
-  25% { transform: translateY(-10px) rotateY(90deg); }
+  25% { transform: translateY(-8px) rotateY(90deg); }
   50% { transform: translateY(0px) rotateY(180deg); }
-  75% { transform: translateY(-5px) rotateY(270deg); }
+  75% { transform: translateY(-4px) rotateY(270deg); }
 }
 
-/* 3D Room perspective */
+/* Enhanced 3D Room perspective */
 .room-3d {
   transform-style: preserve-3d;
-  perspective: 1000px;
+  perspective: 1200px;
+  perspective-origin: 50% 30%;
 }
 
 .room-object {
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .room-object:hover {
-  transform: translateZ(10px) scale(1.1);
+  transform: translateZ(15px) scale(1.08);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 }
 
-/* Glowing orb effects for VR game */
+/* Enhanced glowing orb effects for VR game */
 .glow-orb {
-  box-shadow: 0 0 20px currentColor;
-  animation: pulse-glow 2s ease-in-out infinite alternate;
+  box-shadow: 
+    0 0 20px currentColor,
+    0 0 40px currentColor,
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  animation: pulse-glow 3s ease-in-out infinite alternate;
 }
 
 @keyframes pulse-glow {
   from {
-    box-shadow: 0 0 20px currentColor;
+    box-shadow: 
+      0 0 20px currentColor,
+      0 0 40px currentColor,
+      inset 0 0 20px rgba(255, 255, 255, 0.2);
+    transform: scale(1);
   }
   to {
-    box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
+    box-shadow: 
+      0 0 30px currentColor, 
+      0 0 60px currentColor,
+      0 0 80px currentColor,
+      inset 0 0 30px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
   }
 }
 
-/* 3D Depth simulation */
+/* Enhanced 3D Depth simulation */
 .depth-near {
-  filter: blur(0px) brightness(1);
+  filter: blur(0px) brightness(1.1) contrast(1.1);
   z-index: 100;
 }
 
 .depth-mid {
-  filter: blur(0.5px) brightness(0.9);
+  filter: blur(0.3px) brightness(1) contrast(1.05);
   z-index: 50;
 }
 
 .depth-far {
-  filter: blur(1px) brightness(0.8);
+  filter: blur(0.8px) brightness(0.9) contrast(0.95);
   z-index: 10;
 }
 
-/* Progress indicators */
+/* Enhanced progress indicators */
 .progress-bar {
-  background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+  background: linear-gradient(90deg, #10B981 0%, #34D399 50%, #6EE7B7 100%);
   border-radius: 9999px;
-  transition: width 0.3s ease;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
-/* Accessibility improvements */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Focus indicators for keyboard navigation */
+/* Enhanced focus indicators for keyboard navigation */
 .focus-ring:focus {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  box-shadow: 
+    0 0 0 3px rgba(59, 130, 246, 0.5),
+    0 0 0 6px rgba(59, 130, 246, 0.2);
   outline: none;
+  border-radius: 8px;
 }
 
-/* High contrast borders for better visibility */
+/* Enhanced game area styling */
 .game-area {
-  border: 2px solid #059669;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 3px solid #059669;
+  box-shadow: 
+    0 8px 25px -5px rgba(0, 0, 0, 0.1),
+    0 4px 10px -3px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 }
 
-/* Smooth animations for UI elements */
+/* Enhanced slide-in animation */
 .slide-in {
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-/* VR-style background patterns */
+/* Enhanced VR-style background patterns */
 .vr-background {
   background: 
-    radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.3) 0%, transparent 50%);
+    radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.4) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
 }
 
-/* 3D room grid effect */
+/* Enhanced 3D room grid effect */
 .room-grid {
   background-image: 
-    linear-gradient(rgba(245, 158, 11, 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 158, 11, 0.3) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(rgba(245, 158, 11, 0.4) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.4) 2px, transparent 2px);
+  background-size: 60px 60px;
+  background-position: 0 0, 0 0;
+}
+
+/* Enhanced isometric grid */
+.iso-grid {
+  background-image: 
+    linear-gradient(30deg, rgba(245, 158, 11, 0.3) 1px, transparent 1px),
+    linear-gradient(-30deg, rgba(245, 158, 11, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 /* Enhanced hover effects for 3D objects */
 .object-3d {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .object-3d:hover {
-  transform: translateZ(15px) scale(1.05);
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+  transform: translateZ(20px) scale(1.08) rotateY(5deg);
+  filter: 
+    drop-shadow(0 12px 25px rgba(0, 0, 0, 0.15))
+    drop-shadow(0 6px 12px rgba(0, 0, 0, 0.1))
+    brightness(1.05);
 }
 
-/* Rhythm game combo effects */
+/* Enhanced rhythm game combo effects */
 .combo-text {
-  animation: combo-pulse 0.5s ease-out;
+  animation: combo-pulse 0.6s ease-out;
+  text-shadow: 0 2px 8px rgba(255, 105, 180, 0.6);
 }
 
 @keyframes combo-pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); color: #ff69b4; }
-  100% { transform: scale(1); }
+  0% { 
+    transform: scale(1); 
+    color: inherit;
+  }
+  50% { 
+    transform: scale(1.3); 
+    color: #ff69b4;
+    text-shadow: 0 4px 16px rgba(255, 105, 180, 0.8);
+  }
+  100% { 
+    transform: scale(1); 
+    color: inherit;
+  }
 }
 
-/* Math challenge popup animation */
+/* Enhanced math challenge popup animation */
 .math-popup {
-  animation: popup-bounce 0.3s ease-out;
+  animation: popup-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes popup-bounce {
-  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0% { 
+    transform: scale(0.7) translateY(30px); 
+    opacity: 0; 
+  }
+  70% {
+    transform: scale(1.05) translateY(-5px);
+    opacity: 0.9;
+  }
+  100% { 
+    transform: scale(1) translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* Enhanced word falling animation */
+.falling-word {
+  animation: enhanced-fall linear;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+@keyframes enhanced-fall {
+  from {
+    transform: translateY(-120px) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(-100px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(380px) scale(1);
+  }
+  to {
+    transform: translateY(420px) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* Authentication form styling */
+.auth-input {
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Enhanced card hover effects */
+.game-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.game-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px -12px rgba(0, 0, 0, 0.15),
+    0 8px 20px -8px rgba(0, 0, 0, 0.1);
+}
+
+/* Level badge styling */
+.level-badge {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  animation: gentle-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes gentle-glow {
+  from {
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  }
+  to {
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.5);
+  }
+}
+
+/* Enhanced button gradients */
+.btn-enhanced {
+  background: linear-gradient(135deg, var(--from-color), var(--to-color));
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Print styles */
 @media print {
   .no-print {
     display: none;
+  }
+  
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
   }
 }
