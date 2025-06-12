@@ -1626,7 +1626,12 @@ const CognitiveGym = () => {
                     <h3 className="text-xl font-semibold text-gray-800 mb-2 bg-gradient-to-r from-blue-100 to-purple-100 p-4 rounded-lg">
                       Rebuild the room from memory
                     </h3>
-                    <p className="text-gray-600">Click an object to select it, then click a <span className="font-bold text-orange-600">position marker 📍</span> to place it</p>
+                    <p className="text-gray-600">
+                      Click an object to select it, then click a <span className="font-bold text-green-600">green position marker ✅</span> to place it
+                    </p>
+                    <p className="text-sm text-blue-600 mt-2">
+                      💡 <strong>Smart Swapping:</strong> If another object is at that position, they'll automatically swap places!
+                    </p>
                   </div>
                 )}
 
