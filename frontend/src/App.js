@@ -1790,15 +1790,18 @@ const CognitiveGym = () => {
                 {/* Enhanced Object Selection UI */}
                 {selectedObject && gamePhase === 'rebuild' && (
                   <div className="text-center mt-6">
-                    <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-orange-100 to-red-100 px-6 py-3 rounded-full shadow-lg border border-orange-200">
+                    <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-green-100 to-emerald-100 px-6 py-3 rounded-full shadow-lg border border-green-200">
                       <span className="text-3xl">{currentRoom.find(obj => obj.id === selectedObject)?.emoji}</span>
-                      <span className="font-bold text-orange-800 text-lg">
+                      <span className="font-bold text-green-800 text-lg">
                         {currentRoom.find(obj => obj.id === selectedObject)?.name} selected
                       </span>
                       <span className="animate-bounce">👆</span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-3 bg-blue-50 p-2 rounded-lg">
-                      📍 Click an <strong>orange position marker</strong> beside the desired location to place this object
+                    <p className="text-sm text-gray-600 mt-3 bg-blue-50 p-3 rounded-lg">
+                      ✅ Click any <strong>green position marker</strong> to place this object there
+                    </p>
+                    <p className="text-xs text-blue-500 mt-2">
+                      🔄 Objects will automatically swap if the position is occupied!
                     </p>
                   </div>
                 )}
