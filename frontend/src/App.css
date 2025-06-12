@@ -95,6 +95,65 @@ button:active {
   }
 }
 
+/* VR-Style 3D Effects */
+.vr-orb {
+  transform-style: preserve-3d;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotateY(0deg); }
+  25% { transform: translateY(-10px) rotateY(90deg); }
+  50% { transform: translateY(0px) rotateY(180deg); }
+  75% { transform: translateY(-5px) rotateY(270deg); }
+}
+
+/* 3D Room perspective */
+.room-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.room-object {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.room-object:hover {
+  transform: translateZ(10px) scale(1.1);
+}
+
+/* Glowing orb effects for VR game */
+.glow-orb {
+  box-shadow: 0 0 20px currentColor;
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 0 20px currentColor;
+  }
+  to {
+    box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
+  }
+}
+
+/* 3D Depth simulation */
+.depth-near {
+  filter: blur(0px) brightness(1);
+  z-index: 100;
+}
+
+.depth-mid {
+  filter: blur(0.5px) brightness(0.9);
+  z-index: 50;
+}
+
+.depth-far {
+  filter: blur(1px) brightness(0.8);
+  z-index: 10;
+}
+
 /* Progress indicators */
 .progress-bar {
   background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
@@ -141,6 +200,54 @@ button:active {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* VR-style background patterns */
+.vr-background {
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.3) 0%, transparent 50%);
+}
+
+/* 3D room grid effect */
+.room-grid {
+  background-image: 
+    linear-gradient(rgba(245, 158, 11, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.3) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Enhanced hover effects for 3D objects */
+.object-3d {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.object-3d:hover {
+  transform: translateZ(15px) scale(1.05);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+/* Rhythm game combo effects */
+.combo-text {
+  animation: combo-pulse 0.5s ease-out;
+}
+
+@keyframes combo-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); color: #ff69b4; }
+  100% { transform: scale(1); }
+}
+
+/* Math challenge popup animation */
+.math-popup {
+  animation: popup-bounce 0.3s ease-out;
+}
+
+@keyframes popup-bounce {
+  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
 /* Print styles */
