@@ -1459,24 +1459,42 @@ const CognitiveGym = () => {
     const placeObject = (newPosition) => {
       if (!selectedObject || gamePhase !== 'rebuild') return;
 
-      const occupiedPosition = currentRoom.find(obj => 
-        obj.id !== selectedObject && 
-        Math.abs(obj.position.x - newPosition.x) < 15 && 
-        Math.abs(obj.position.y - newPosition.y) < 15
-      );
+      setCurrentRoom(prev => {
+        // Find the selected object
+        const selectedObj = prev.find(obj => obj.id === selectedObject);
+        if (!selectedObj) return prev;
 
-      if (occupiedPosition) {
-        setMistakes(prev => prev + 1);
-        return;
-      }
+        // Find if there's an object at the target position
+        const targetObj = prev.find(obj => 
+          obj.id !== selectedObject && 
+          Math.abs(obj.position.x - newPosition.x) < 15 && 
+          Math.abs(obj.position.y - newPosition.y) < 15
+        );
 
-      setCurrentRoom(prev => 
-        prev.map(obj => 
-          obj.id === selectedObject 
-            ? { ...obj, position: newPosition }
-            : obj
-        )
-      );
+        // If there's an object at target position, swap them
+        if (targetObj) {
+          const selectedObjOriginalPosition = selectedObj.position;
+          
+          return prev.map(obj => {
+            if (obj.id === selectedObject) {
+              // Move selected object to target position
+              return { ...obj, position: newPosition };
+            } else if (obj.id === targetObj.id) {
+              // Move target object to selected object's original position
+              return { ...obj, position: selectedObjOriginalPosition };
+            }
+            return obj;
+          });
+        } else {
+          // If no object at target position, just move the selected object
+          return prev.map(obj => 
+            obj.id === selectedObject 
+              ? { ...obj, position: newPosition }
+              : obj
+          );
+        }
+      });
+      
       setSelectedObject(null);
     };
 
