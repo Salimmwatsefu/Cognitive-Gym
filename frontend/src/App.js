@@ -2205,6 +2205,8 @@ const CognitiveGym = () => {
       {currentScreen === 'rhythm' && <RhythmReachGame />}
       {currentScreen === 'room' && <RoomRebuildGame />}
       {currentScreen === 'memorycards' && <MemoryCardsGame />}
+      {currentScreen === 'leaderboard' && <Leaderboard />}
+      {currentScreen === 'profile' && <UserProfile />}
     </div>
   );
 };
