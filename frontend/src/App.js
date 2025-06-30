@@ -1908,6 +1908,7 @@ const CognitiveGym = () => {
       {currentScreen === 'wordtree' && <WordTreeGame />}
       {currentScreen === 'rhythm' && <RhythmReachGame />}
       {currentScreen === 'room' && <RoomRebuildGame />}
+      {currentScreen === 'memorycards' && <MemoryCardsGame />}
     </div>
   );
 };
