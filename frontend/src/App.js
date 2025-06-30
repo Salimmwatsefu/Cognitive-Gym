@@ -10,6 +10,7 @@ const CognitiveGym = () => {
     wordTreeCompletions: 0,
     rhythmReachCompletions: 0,
     roomRebuildCompletions: 0,
+    memoryCardsCompletions: 0,
     totalScore: 0,
     averageScore: 0,
     streak: 0,
