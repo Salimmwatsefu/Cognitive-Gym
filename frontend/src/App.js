@@ -419,6 +419,44 @@ const CognitiveGym = () => {
                 </button>
               </div>
             </div>
+
+            {/* Memory Cards Game */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div className="h-48 bg-gradient-to-br from-indigo-400 to-violet-600 relative overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-6xl">🧩</span>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur rounded-full px-3 py-1">
+                  <span className="text-white text-sm font-medium">Working Memory</span>
+                </div>
+                {/* Animated card flip effects */}
+                <div className="absolute top-8 left-8 w-8 h-12 bg-white/20 rounded transform rotate-12 animate-pulse"></div>
+                <div className="absolute bottom-8 right-8 w-8 h-12 bg-white/30 rounded transform -rotate-6 animate-bounce"></div>
+                <div className="absolute top-1/2 left-1/3 w-6 h-8 bg-white/25 rounded animate-ping"></div>
+              </div>
+              <div className="p-6">
+                <h4 className="text-2xl font-bold text-gray-800 mb-3">Memory Cards</h4>
+                <p className="text-gray-600 mb-4 text-lg leading-relaxed">
+                  Match pairs of cards with increasing difficulty. Tests short-term memory and concentration skills.
+                </p>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-500">Completions:</span>
+                    <span className="font-semibold text-indigo-600">{userProgress.memoryCardsCompletions}</span>
+                  </div>
+                  <div className="flex text-yellow-400">
+                    {'★'.repeat(Math.min(5, Math.floor(userProgress.memoryCardsCompletions / 2) + 1))}
+                    {'☆'.repeat(Math.max(0, 5 - Math.min(5, Math.floor(userProgress.memoryCardsCompletions / 2) + 1)))}
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setCurrentScreen('memorycards')}
+                  className="w-full bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white font-semibold py-4 px-6 rounded-xl text-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  Start Memory Challenge
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
