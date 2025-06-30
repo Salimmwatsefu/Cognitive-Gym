@@ -161,7 +161,8 @@ const CognitiveGym = () => {
         maze: prev.mazeCompletions + (gameType === 'maze' ? 1 : 0),
         wordTree: prev.wordTreeCompletions + (gameType === 'wordTree' ? 1 : 0),
         rhythm: prev.rhythmReachCompletions + (gameType === 'rhythm' ? 1 : 0),
-        room: prev.roomRebuildCompletions + (gameType === 'room' ? 1 : 0)
+        room: prev.roomRebuildCompletions + (gameType === 'room' ? 1 : 0),
+        memoryCards: prev.memoryCardsCompletions + (gameType === 'memoryCards' ? 1 : 0)
       };
 
       return {
@@ -171,6 +172,7 @@ const CognitiveGym = () => {
         wordTreeCompletions: gameCompletions.wordTree,
         rhythmReachCompletions: gameCompletions.rhythm,
         roomRebuildCompletions: gameCompletions.room,
+        memoryCardsCompletions: gameCompletions.memoryCards,
         totalScore: newTotalScore,
         averageScore: newAverageScore,
         xp: newXP,
