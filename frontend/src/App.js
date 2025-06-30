@@ -1896,6 +1896,290 @@ const CognitiveGym = () => {
     );
   };
 
+  // Memory Cards Game Component
+  const MemoryCardsGame = () => {
+    const [gamePhase, setGamePhase] = useState('instruction');
+    const [cards, setCards] = useState([]);
+    const [flippedCards, setFlippedCards] = useState([]);
+    const [matchedCards, setMatchedCards] = useState([]);
+    const [moves, setMoves] = useState(0);
+    const [score, setScore] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(120);
+    const [gameActive, setGameActive] = useState(false);
+    const [level, setLevel] = useState(1);
+
+    // Card symbols for different levels
+    const cardSymbols = {
+      1: ['🍎', '🍌', '🍊', '🍇', '🍓', '🥝'], // 6 pairs = 12 cards
+      2: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'], // 8 pairs = 16 cards
+      3: ['⭐', '🌙', '☀️', '🌈', '⚡', '❄️', '🔥', '💧', '🌪️', '🌊'] // 10 pairs = 20 cards
+    };
+
+    // Initialize game based on level
+    const initializeGame = useCallback(() => {
+      const symbols = cardSymbols[level];
+      const gameCards = [];
+      
+      // Create pairs
+      symbols.forEach((symbol, index) => {
+        gameCards.push(
+          { id: index * 2, symbol, isFlipped: false, isMatched: false },
+          { id: index * 2 + 1, symbol, isFlipped: false, isMatched: false }
+        );
+      });
+      
+      // Shuffle cards
+      const shuffledCards = gameCards.sort(() => Math.random() - 0.5);
+      setCards(shuffledCards);
+      setFlippedCards([]);
+      setMatchedCards([]);
+      setMoves(0);
+      setScore(0);
+      setTimeLeft(level === 1 ? 120 : level === 2 ? 150 : 180);
+    }, [level]);
+
+    const startGame = () => {
+      setGamePhase('playing');
+      setGameActive(true);
+      initializeGame();
+    };
+
+    const flipCard = (cardId) => {
+      if (!gameActive || flippedCards.length === 2) return;
+      
+      const card = cards.find(c => c.id === cardId);
+      if (card.isFlipped || card.isMatched) return;
+
+      const newFlippedCards = [...flippedCards, cardId];
+      setFlippedCards(newFlippedCards);
+
+      // Update card state
+      setCards(prev => prev.map(c => 
+        c.id === cardId ? { ...c, isFlipped: true } : c
+      ));
+
+      if (newFlippedCards.length === 2) {
+        setMoves(prev => prev + 1);
+        
+        const [firstId, secondId] = newFlippedCards;
+        const firstCard = cards.find(c => c.id === firstId);
+        const secondCard = cards.find(c => c.id === secondId);
+
+        if (firstCard.symbol === secondCard.symbol) {
+          // Match found
+          setTimeout(() => {
+            setMatchedCards(prev => [...prev, firstId, secondId]);
+            setCards(prev => prev.map(c => 
+              (c.id === firstId || c.id === secondId) 
+                ? { ...c, isMatched: true } 
+                : c
+            ));
+            setFlippedCards([]);
+            
+            const newScore = score + Math.max(10, 50 - moves * 2);
+            setScore(newScore);
+            
+            // Check if all cards are matched
+            if (matchedCards.length + 2 === cards.length) {
+              const timeBonus = Math.floor(timeLeft / 10);
+              const finalScore = newScore + timeBonus;
+              setScore(finalScore);
+              setGamePhase('complete');
+              setGameActive(false);
+              updateProgress('memoryCards', finalScore);
+            }
+          }, 1000);
+        } else {
+          // No match
+          setTimeout(() => {
+            setCards(prev => prev.map(c => 
+              (c.id === firstId || c.id === secondId) 
+                ? { ...c, isFlipped: false } 
+                : c
+            ));
+            setFlippedCards([]);
+          }, 1500);
+        }
+      }
+    };
+
+    // Timer effect
+    useEffect(() => {
+      let timer;
+      if (gameActive && timeLeft > 0) {
+        timer = setTimeout(() => {
+          setTimeLeft(prev => prev - 1);
+        }, 1000);
+      } else if (timeLeft === 0) {
+        setGamePhase('complete');
+        setGameActive(false);
+        updateProgress('memoryCards', score);
+      }
+      return () => clearTimeout(timer);
+    }, [gameActive, timeLeft, score]);
+
+    const resetGame = () => {
+      setGamePhase('instruction');
+      setGameActive(false);
+      setLevel(1);
+    };
+
+    const nextLevel = () => {
+      if (level < 3) {
+        setLevel(prev => prev + 1);
+        setGamePhase('instruction');
+      } else {
+        resetGame();
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-100 p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => setCurrentScreen('dashboard')}
+                className="text-indigo-600 hover:text-indigo-800 text-lg font-medium bg-white px-4 py-2 rounded-lg shadow-sm"
+              >
+                ← Back to Dashboard
+              </button>
+              <h2 className="text-3xl font-bold text-gray-800">Memory Cards Challenge</h2>
+              <div className="text-indigo-600 text-sm bg-indigo-100 px-3 py-1 rounded-full">
+                Level {level}
+              </div>
+            </div>
+            {gamePhase === 'playing' && (
+              <div className="flex space-x-6 text-right">
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <p className="text-sm text-gray-600">Score</p>
+                  <p className="text-2xl font-bold text-indigo-600">{score}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <p className="text-sm text-gray-600">Moves</p>
+                  <p className="text-2xl font-bold text-purple-600">{moves}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <p className="text-sm text-gray-600">Time</p>
+                  <p className="text-2xl font-bold text-orange-600">{timeLeft}s</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-indigo-100">
+            {gamePhase === 'instruction' && (
+              <div className="text-center">
+                <div className="text-6xl mb-6">🧩</div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Memory Cards Challenge - Level {level}</h3>
+                <div className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed bg-indigo-50 p-6 rounded-xl">
+                  <p className="mb-4">🎯 <strong>Goal:</strong> Find all matching pairs of cards</p>
+                  <p className="mb-4">🧠 <strong>Rules:</strong> Click cards to flip them, match identical symbols</p>
+                  <p className="mb-4">⏱️ <strong>Strategy:</strong> Remember card positions and minimize moves</p>
+                  <p className="text-indigo-600 font-semibold">
+                    Level {level}: {cardSymbols[level].length} pairs ({cardSymbols[level].length * 2} cards)
+                  </p>
+                </div>
+                <button 
+                  onClick={startGame}
+                  className="bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  Start Level {level}
+                </button>
+              </div>
+            )}
+
+            {gamePhase === 'playing' && (
+              <div className="text-center">
+                <div className="mb-6">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4 bg-gradient-to-r from-indigo-100 to-violet-100 p-4 rounded-lg">
+                    Find all {cardSymbols[level].length} pairs! 
+                    <span className="text-indigo-600 ml-2">
+                      ({matchedCards.length / 2}/{cardSymbols[level].length} found)
+                    </span>
+                  </h3>
+                  <div className="w-full bg-indigo-200 rounded-full h-3 mb-4">
+                    <div 
+                      className="bg-gradient-to-r from-indigo-500 to-violet-600 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${(matchedCards.length / cards.length) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div 
+                  className="grid gap-4 justify-center mx-auto max-w-4xl"
+                  style={{
+                    gridTemplateColumns: `repeat(${level === 1 ? 4 : level === 2 ? 4 : 5}, minmax(0, 1fr))`
+                  }}
+                >
+                  {cards.map(card => (
+                    <div
+                      key={card.id}
+                      onClick={() => flipCard(card.id)}
+                      className={`aspect-square w-20 h-20 md:w-24 md:h-24 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-3xl md:text-4xl font-bold shadow-lg ${
+                        card.isFlipped || card.isMatched
+                          ? 'bg-gradient-to-br from-white to-indigo-50 border-2 border-indigo-300'
+                          : 'bg-gradient-to-br from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 border-2 border-indigo-400'
+                      }`}
+                    >
+                      {card.isFlipped || card.isMatched ? (
+                        <span className={card.isMatched ? 'animate-pulse' : ''}>{card.symbol}</span>
+                      ) : (
+                        <span className="text-white">?</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {gamePhase === 'complete' && (
+              <div className="text-center">
+                <div className="text-6xl mb-6">
+                  {matchedCards.length === cards.length ? '🏆' : score > 100 ? '⭐' : '👏'}
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  {matchedCards.length === cards.length ? 'Perfect Memory!' : 'Level Complete!'}
+                </h3>
+                <div className="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent mb-4">{score} points</div>
+                <div className="text-lg text-gray-600 mb-4 bg-indigo-50 p-4 rounded-xl">
+                  <p>✅ Pairs found: {matchedCards.length / 2}/{cardSymbols[level].length}</p>
+                  <p>🎯 Moves used: {moves}</p>
+                  <p>⏱️ Time bonus: +{Math.floor(timeLeft / 10)} points</p>
+                </div>
+                <div className="bg-gradient-to-r from-indigo-50 to-violet-50 p-4 rounded-lg mb-6">
+                  <p className="text-indigo-600 font-semibold">+{Math.floor(score / 10) + 20} XP Earned!</p>
+                </div>
+                <div className="flex justify-center space-x-4">
+                  {level < 3 && matchedCards.length === cards.length && (
+                    <button 
+                      onClick={nextLevel}
+                      className="bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105"
+                    >
+                      Next Level
+                    </button>
+                  )}
+                  <button 
+                    onClick={resetGame}
+                    className="bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105"
+                  >
+                    Play Again
+                  </button>
+                  <button 
+                    onClick={() => setCurrentScreen('dashboard')}
+                    className="bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-xl transition-all duration-200"
+                  >
+                    Back to Dashboard
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Main render
   if (currentScreen === 'login') {
     return <LoginScreen />;
