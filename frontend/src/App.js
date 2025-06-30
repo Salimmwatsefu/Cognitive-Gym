@@ -465,7 +465,7 @@ const CognitiveGym = () => {
       <section className="py-16 px-6 bg-white/50">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-3xl font-bold text-gray-800 mb-8">Your Progress Journey</h3>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-7 gap-6">
             <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
               <div className="text-3xl mb-2">🎯</div>
               <div className="text-2xl font-bold text-gray-800">{userProgress.totalGamesPlayed}</div>
@@ -490,6 +490,11 @@ const CognitiveGym = () => {
               <div className="text-3xl mb-2">🏠</div>
               <div className="text-2xl font-bold text-orange-600">{userProgress.roomRebuildCompletions}</div>
               <div className="text-gray-600">Rooms Rebuilt</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-indigo-500">
+              <div className="text-3xl mb-2">🧩</div>
+              <div className="text-2xl font-bold text-indigo-600">{userProgress.memoryCardsCompletions}</div>
+              <div className="text-gray-600">Cards Matched</div>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
               <div className="text-3xl mb-2">🏆</div>
