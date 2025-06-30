@@ -210,6 +210,18 @@ const CognitiveGym = () => {
                 <p className="text-xs text-gray-500">{userProgress.xp % 100}/100 XP</p>
               </div>
               <button 
+                onClick={() => setCurrentScreen('leaderboard')}
+                className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-lg transition-colors bg-yellow-50 hover:bg-yellow-100"
+              >
+                🏆 Leaderboard
+              </button>
+              <button 
+                onClick={() => setCurrentScreen('profile')}
+                className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-lg transition-colors bg-blue-50 hover:bg-blue-100"
+              >
+                👤 Profile
+              </button>
+              <button 
                 onClick={logout}
                 className="text-gray-500 hover:text-gray-700 px-3 py-1 rounded-lg transition-colors"
               >
