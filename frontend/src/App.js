@@ -266,7 +266,7 @@ const CognitiveGym = () => {
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">Choose Your Brain Training</h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             
             {/* Maze Path Recall Game */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
