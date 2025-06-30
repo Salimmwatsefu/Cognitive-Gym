@@ -1908,6 +1908,439 @@ const CognitiveGym = () => {
     );
   };
 
+  // Leaderboard Component
+  const Leaderboard = () => {
+    // Mock leaderboard data
+    const leaderboardData = {
+      maze: [
+        { rank: 1, name: 'Sarah Chen', score: 95, level: 8, avatar: '👩‍🦳' },
+        { rank: 2, name: 'Robert Smith', score: 92, level: 7, avatar: '👨‍🦲' },
+        { rank: 3, name: user?.name || 'Demo User', score: userProgress.averageScore, level: userProgress.level, avatar: user?.avatar || '🧠' },
+        { rank: 4, name: 'Margaret Jones', score: 87, level: 6, avatar: '👵' },
+        { rank: 5, name: 'Frank Williams', score: 84, level: 6, avatar: '👴' }
+      ],
+      wordTree: [
+        { rank: 1, name: 'Eleanor Davis', score: 98, level: 9, avatar: '👩‍🦳' },
+        { rank: 2, name: 'Harold Miller', score: 94, level: 8, avatar: '👨‍🦲' },
+        { rank: 3, name: user?.name || 'Demo User', score: userProgress.averageScore, level: userProgress.level, avatar: user?.avatar || '🧠' },
+        { rank: 4, name: 'Dorothy Wilson', score: 89, level: 7, avatar: '👵' },
+        { rank: 5, name: 'George Brown', score: 86, level: 7, avatar: '👴' }
+      ],
+      rhythm: [
+        { rank: 1, name: 'Betty Garcia', score: 96, level: 8, avatar: '👩‍🦳' },
+        { rank: 2, name: 'Walter Johnson', score: 93, level: 7, avatar: '👨‍🦲' },
+        { rank: 3, name: user?.name || 'Demo User', score: userProgress.averageScore, level: userProgress.level, avatar: user?.avatar || '🧠' },
+        { rank: 4, name: 'Helen Anderson', score: 88, level: 6, avatar: '👵' },
+        { rank: 5, name: 'Arthur Taylor', score: 85, level: 6, avatar: '👴' }
+      ],
+      room: [
+        { rank: 1, name: 'Ruth Martinez', score: 97, level: 9, avatar: '👩‍🦳' },
+        { rank: 2, name: 'Edward Thompson', score: 94, level: 8, avatar: '👨‍🦲' },
+        { rank: 3, name: user?.name || 'Demo User', score: userProgress.averageScore, level: userProgress.level, avatar: user?.avatar || '🧠' },
+        { rank: 4, name: 'Marie White', score: 90, level: 7, avatar: '👵' },
+        { rank: 5, name: 'Charles Lewis', score: 87, level: 7, avatar: '👴' }
+      ],
+      memoryCards: [
+        { rank: 1, name: 'Alice Cooper', score: 99, level: 9, avatar: '👩‍🦳' },
+        { rank: 2, name: 'James Wilson', score: 95, level: 8, avatar: '👨‍🦲' },
+        { rank: 3, name: user?.name || 'Demo User', score: userProgress.averageScore, level: userProgress.level, avatar: user?.avatar || '🧠' },
+        { rank: 4, name: 'Linda Davis', score: 91, level: 7, avatar: '👵' },
+        { rank: 5, name: 'Paul Johnson', score: 88, level: 7, avatar: '👴' }
+      ]
+    };
+
+    const [selectedGame, setSelectedGame] = useState('maze');
+
+    const gameDisplayNames = {
+      maze: 'Maze Path Recall',
+      wordTree: 'Word Tree',
+      rhythm: 'Rhythm Reach',
+      room: 'Room Rebuild',
+      memoryCards: 'Memory Cards'
+    };
+
+    const gameIcons = {
+      maze: '🗺️',
+      wordTree: '🌳',
+      rhythm: '🎵',
+      room: '🏠',
+      memoryCards: '🧩'
+    };
+
+    const gameColors = {
+      maze: 'from-blue-500 to-blue-600',
+      wordTree: 'from-emerald-500 to-green-600',
+      rhythm: 'from-purple-500 to-pink-600',
+      room: 'from-orange-500 to-red-600',
+      memoryCards: 'from-indigo-500 to-violet-600'
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 p-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => setCurrentScreen('dashboard')}
+                className="text-orange-600 hover:text-orange-800 text-lg font-medium bg-white px-4 py-2 rounded-lg shadow-sm"
+              >
+                ← Back to Dashboard
+              </button>
+              <h2 className="text-3xl font-bold text-gray-800">🏆 Leaderboard</h2>
+            </div>
+          </div>
+
+          {/* Game Selection Tabs */}
+          <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-orange-100">
+            <div className="flex flex-wrap justify-center gap-4 mb-6">
+              {Object.keys(gameDisplayNames).map(gameKey => (
+                <button
+                  key={gameKey}
+                  onClick={() => setSelectedGame(gameKey)}
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 ${
+                    selectedGame === gameKey
+                      ? `bg-gradient-to-r ${gameColors[gameKey]} text-white shadow-lg`
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  <span className="mr-2">{gameIcons[gameKey]}</span>
+                  {gameDisplayNames[gameKey]}
+                </button>
+              ))}
+            </div>
+
+            {/* Leaderboard Table */}
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">
+                <span className="mr-2">{gameIcons[selectedGame]}</span>
+                {gameDisplayNames[selectedGame]} Champions
+              </h3>
+              
+              {leaderboardData[selectedGame].map((player, index) => (
+                <div 
+                  key={index}
+                  className={`flex items-center justify-between p-6 rounded-xl transition-all duration-200 transform hover:scale-105 ${
+                    player.name === (user?.name || 'Demo User')
+                      ? `bg-gradient-to-r ${gameColors[selectedGame]} text-white shadow-lg`
+                      : 'bg-gray-50 hover:bg-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl ${
+                      player.rank === 1 ? 'bg-yellow-400 text-yellow-800' :
+                      player.rank === 2 ? 'bg-gray-300 text-gray-700' :
+                      player.rank === 3 ? 'bg-amber-400 text-amber-800' :
+                      'bg-gray-200 text-gray-600'
+                    }`}>
+                      {player.rank === 1 ? '🥇' : player.rank === 2 ? '🥈' : player.rank === 3 ? '🥉' : `#${player.rank}`}
+                    </div>
+                    <div className="text-3xl">{player.avatar}</div>
+                    <div>
+                      <div className={`font-bold text-lg ${
+                        player.name === (user?.name || 'Demo User') ? 'text-white' : 'text-gray-800'
+                      }`}>
+                        {player.name}
+                        {player.name === (user?.name || 'Demo User') && 
+                          <span className="ml-2 text-sm bg-white/20 px-2 py-1 rounded-full">You!</span>
+                        }
+                      </div>
+                      <div className={`text-sm ${
+                        player.name === (user?.name || 'Demo User') ? 'text-white/80' : 'text-gray-600'
+                      }`}>
+                        Level {player.level}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={`text-2xl font-bold ${
+                      player.name === (user?.name || 'Demo User') ? 'text-white' : 'text-gray-800'
+                    }`}>
+                      {player.score}%
+                    </div>
+                    <div className={`text-sm ${
+                      player.name === (user?.name || 'Demo User') ? 'text-white/80' : 'text-gray-600'
+                    }`}>
+                      Best Score
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Motivational Message */}
+            <div className="text-center mt-8 p-6 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl">
+              <div className="text-2xl mb-2">🎯</div>
+              <p className="text-gray-700 font-medium">
+                Keep training to climb the leaderboard! Every game you play helps strengthen your cognitive abilities.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // User Profile Component
+  const UserProfile = () => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedUser, setEditedUser] = useState(user);
+
+    const saveProfile = () => {
+      setUser(editedUser);
+      localStorage.setItem('cognitiveGymUser', JSON.stringify(editedUser));
+      setIsEditing(false);
+    };
+
+    const cancelEdit = () => {
+      setEditedUser(user);
+      setIsEditing(false);
+    };
+
+    const achievements = [
+      { 
+        name: 'First Steps', 
+        description: 'Completed your first game', 
+        earned: userProgress.totalGamesPlayed > 0,
+        icon: '🏃‍♂️'
+      },
+      { 
+        name: 'Maze Runner', 
+        description: 'Completed 5 maze challenges', 
+        earned: userProgress.mazeCompletions >= 5,
+        icon: '🗺️'
+      },
+      { 
+        name: 'Word Master', 
+        description: 'Completed 5 word tree games', 
+        earned: userProgress.wordTreeCompletions >= 5,
+        icon: '🌳'
+      },
+      { 
+        name: 'Rhythm Star', 
+        description: 'Completed 5 rhythm reach games', 
+        earned: userProgress.rhythmReachCompletions >= 5,
+        icon: '🎵'
+      },
+      { 
+        name: 'Room Designer', 
+        description: 'Completed 5 room rebuild games', 
+        earned: userProgress.roomRebuildCompletions >= 5,
+        icon: '🏠'
+      },
+      { 
+        name: 'Memory Champion', 
+        description: 'Completed 5 memory card games', 
+        earned: userProgress.memoryCardsCompletions >= 5,
+        icon: '🧩'
+      },
+      { 
+        name: 'Level Up!', 
+        description: 'Reached level 5', 
+        earned: userProgress.level >= 5,
+        icon: '⬆️'
+      },
+      { 
+        name: 'High Achiever', 
+        description: 'Maintained 90%+ average score', 
+        earned: userProgress.averageScore >= 90,
+        icon: '🏆'
+      },
+      { 
+        name: 'Dedicated Trainer', 
+        description: 'Played 25+ games', 
+        earned: userProgress.totalGamesPlayed >= 25,
+        icon: '💪'
+      }
+    ];
+
+    const earnedAchievements = achievements.filter(a => a.earned);
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => setCurrentScreen('dashboard')}
+                className="text-blue-600 hover:text-blue-800 text-lg font-medium bg-white px-4 py-2 rounded-lg shadow-sm"
+              >
+                ← Back to Dashboard
+              </button>
+              <h2 className="text-3xl font-bold text-gray-800">👤 My Profile</h2>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Profile Information */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-blue-100">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Profile Information</h3>
+              
+              <div className="flex items-center space-x-6 mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-4xl">
+                  {user?.avatar || '🧠'}
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800">{user?.name}</h4>
+                  <p className="text-gray-600">{user?.email}</p>
+                  <p className="text-sm text-gray-500">
+                    Member since {new Date(user?.joinDate).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+
+              {!isEditing ? (
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105"
+                >
+                  Edit Profile
+                </button>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-2">Name</label>
+                    <input
+                      type="text"
+                      value={editedUser?.name || ''}
+                      onChange={(e) => setEditedUser({...editedUser, name: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={editedUser?.email || ''}
+                      onChange={(e) => setEditedUser({...editedUser, email: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-2">Avatar</label>
+                    <div className="grid grid-cols-6 gap-2">
+                      {['🧠', '👩‍🦳', '👨‍🦲', '👵', '👴', '🎯', '🌟', '💎', '🏆', '⚡'].map(emoji => (
+                        <button
+                          key={emoji}
+                          onClick={() => setEditedUser({...editedUser, avatar: emoji})}
+                          className={`text-2xl p-2 rounded-lg transition-all duration-200 ${
+                            editedUser?.avatar === emoji 
+                              ? 'bg-blue-100 border-2 border-blue-500' 
+                              : 'bg-gray-100 hover:bg-gray-200 border-2 border-transparent'
+                          }`}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex space-x-4">
+                    <button 
+                      onClick={saveProfile}
+                      className="flex-1 bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200"
+                    >
+                      Save Changes
+                    </button>
+                    <button 
+                      onClick={cancelEdit}
+                      className="flex-1 bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-xl transition-all duration-200"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Progress Statistics */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-blue-100">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Training Statistics</h3>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+                  <div>
+                    <div className="text-lg font-semibold text-gray-800">Current Level</div>
+                    <div className="text-sm text-gray-600">{userProgress.xp} total XP</div>
+                  </div>
+                  <div className="text-3xl font-bold text-blue-600">{userProgress.level}</div>
+                </div>
+                
+                <div className="flex justify-between items-center p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl">
+                  <div>
+                    <div className="text-lg font-semibold text-gray-800">Games Completed</div>
+                    <div className="text-sm text-gray-600">Across all categories</div>
+                  </div>
+                  <div className="text-3xl font-bold text-emerald-600">{userProgress.totalGamesPlayed}</div>
+                </div>
+                
+                <div className="flex justify-between items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
+                  <div>
+                    <div className="text-lg font-semibold text-gray-800">Average Score</div>
+                    <div className="text-sm text-gray-600">Overall performance</div>
+                  </div>
+                  <div className="text-3xl font-bold text-purple-600">{userProgress.averageScore}%</div>
+                </div>
+                
+                <div className="flex justify-between items-center p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl">
+                  <div>
+                    <div className="text-lg font-semibold text-gray-800">Current Streak</div>
+                    <div className="text-sm text-gray-600">Days of good performance</div>
+                  </div>
+                  <div className="text-3xl font-bold text-orange-600">{userProgress.streak}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Achievements Section */}
+          <div className="mt-8 bg-white rounded-2xl shadow-xl p-8 border border-blue-100">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">🏆 Achievements</h3>
+            <div className="mb-4">
+              <p className="text-lg text-gray-600">
+                Progress: <span className="font-semibold text-blue-600">{earnedAchievements.length}/{achievements.length}</span> achievements unlocked
+              </p>
+              <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all duration-300"
+                  style={{ width: `${(earnedAchievements.length / achievements.length) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              {achievements.map((achievement, index) => (
+                <div 
+                  key={index}
+                  className={`p-4 rounded-xl transition-all duration-200 ${
+                    achievement.earned 
+                      ? 'bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300 transform hover:scale-105' 
+                      : 'bg-gray-100 border-2 border-gray-200 opacity-60'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-3xl mb-2">{achievement.icon}</div>
+                    <div className={`font-bold ${achievement.earned ? 'text-gray-800' : 'text-gray-500'}`}>
+                      {achievement.name}
+                    </div>
+                    <div className={`text-sm ${achievement.earned ? 'text-gray-600' : 'text-gray-400'}`}>
+                      {achievement.description}
+                    </div>
+                    {achievement.earned && (
+                      <div className="mt-2 text-xs bg-yellow-400 text-yellow-800 px-2 py-1 rounded-full inline-block">
+                        ✓ EARNED
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Memory Cards Game Component
   const MemoryCardsGame = () => {
     const [gamePhase, setGamePhase] = useState('instruction');
